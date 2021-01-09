@@ -16,9 +16,11 @@ class PrijsKlasse(models.Model):
     
 class Telling(models.Model):
     leider = models.ForeignKey(Leider, on_delete=models.CASCADE)
-    aantalNormaal = models.IntegerField(default=0)
-    aantalZwaar = models.IntegerField(default=0)
+    aantalNormaal = models.IntegerField(default=0, null=True)
+    aantalZwaar = models.IntegerField(default=0, null=True)
     prijsKlasse = models.ForeignKey(PrijsKlasse, on_delete=models.PROTECT)
+    def __str__(self):
+        return str(self.leider) + ' normaal:' + str(self.aantalNormaal) + ' zwaar:' + str(self.aantalZwaar)
 
 class Betaling(models.Model):
     leider = models.ForeignKey(Leider, on_delete=models.CASCADE)

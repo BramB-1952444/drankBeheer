@@ -6,12 +6,14 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from .forms import *
 # Create your views here.
 
 
 def index(request):
-    return render(request, 'beheer/index.html')
+    content = Telling.objects.values('leider__naam').order_by('leider').annotate(normaal=Sum('aantalNormaal'), zwaar=Sum('aantalZwaar')).all()
+    return render(request, 'beheer/index.html', {'content': content})
 
 @login_required
 def logout_view(request):
@@ -49,3 +51,14 @@ def prijsKlasse_delete(request, prijsKlasse_id):
     except ProtectedError:
         return HttpResponseRedirect(reverse('prijsKlasse')) 
     return HttpResponseRedirect(reverse('prijsKlasse'))
+
+def telling_view(request):
+    if request.method == 'POST':
+        form = TellingForm(data=request.POST)
+        if(form.is_valid()):
+            form.save()
+            return HttpResponseRedirect(reverse('tellen'))
+    else:
+        form = TellingForm
+    
+    return render(request, 'beheer/telling.html', {'form': form})
