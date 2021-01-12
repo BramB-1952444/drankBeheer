@@ -8,7 +8,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('prijsklasse/', views.prijsKlasse_view, name="prijsKlasse"),
     path('tellen/', views.telling_view, name="tellen"),
-    path('betaling/', views.prijsKlasse_view, name='betaling'),
-    path('leiders/', views.prijsKlasse_view, name='leiders'),
+    path('betaling/', views.betalingView, name='betaling'),
+    path('leiders/', views.leider_view, name='leiders'),
+    path('leiders/update', views.leider_volgorde, name='leidersUpdate'),
     path('prijsklasse/delete/<int:prijsKlasse_id>/', views.prijsKlasse_delete, name='deletePrijsklasse')
 ]

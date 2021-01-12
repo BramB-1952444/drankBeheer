@@ -1,0 +1,13 @@
+{% extends 'beheer/base.html' %}
+{% block content %}
+<form method="POST">
+{% csrf_token %}
+{{ newForm }}
+  <button type="submit" class="btn btn-success">Toevoegen</button>
+{{ form.errors }}
+</form>
+<form method="POST" action="{% url 'leidersUpdate' %}">
+{% csrf_token %}
+{{ volgordeForm }}
+<button type="submit" class="btn btn-primary">Update</button>
+{% endblock content%}

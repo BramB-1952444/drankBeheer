@@ -1,4 +1,21 @@
 {% extends 'beheer/base.html' %}
 {% block content %}
-{{ content }}
+<table class='table table-striped'>
+    <thead>
+    <tr>
+      <th scope="col">Naam</th>
+      <th scope="col">Totaal</th>
+      <th scope="col">Betaald</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for leider in leiders %}
+    <tr>
+        <th scope="row"> {{ leider.naam }} </td>
+        <td> € {{ leider.totaal }} </td>
+        <td> € {{ leider.betaald }} </td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
 {% endblock content%}
