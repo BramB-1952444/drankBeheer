@@ -4,16 +4,14 @@
     <thead>
     <tr>
       <th scope="col">Naam</th>
-      <th scope="col">Totaal</th>
-      <th scope="col">Betaald</th>
+      <th scope="col">Schulden</th>
     </tr>
   </thead>
   <tbody>
-{% for leider in leiders %}
+{% for leider in content %}
     <tr>
-        <th scope="row"> {{ leider.naam }} </td>
-        <td> € {{ leider.totaal }} </td>
-        <td> € {{ leider.betaald }} </td>
+        <th scope="row"> {{ leider.leider__naam }} </td>
+        <td> € {{ leider.schulden }} </td>
     </tr>
 {% endfor %}
 </tbody>

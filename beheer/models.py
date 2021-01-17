@@ -17,7 +17,7 @@ class PrijsKlasse(models.Model):
     zwaar = models.DecimalField(max_digits=6, decimal_places=2)
     def __str__(self):
         return self.naam + " - €" + str(self.normaal) + " - €" + str(self.zwaar)
-    
+
 class Telling(models.Model):
     leider = models.ForeignKey(Leider, on_delete=models.CASCADE)
     aantalNormaal = models.IntegerField(default=0, null=True)
@@ -27,9 +27,15 @@ class Telling(models.Model):
     def __str__(self):
         return str(self.leider) + ' normaal:' + str(self.aantalNormaal) + ' zwaar:' + str(self.aantalZwaar)
 
+    class Meta:
+        verbose_name_plural = "Tellingen"
+
 class Betaling(models.Model):
     leider = models.ForeignKey(Leider, on_delete=models.CASCADE)
     hoeveelheid = models.DecimalField(max_digits=8, decimal_places=2)
     datum = models.DateTimeField(auto_now_add=True, blank=True)
     def __str__(self) -> str:
         return str(self.leider) + " - " + str(self.hoeveelheid)
+
+    class Meta:
+        verbose_name_plural = "Betalingen"

@@ -1,4 +1,7 @@
+from django.db.models import aggregates
+from django.db.models.aggregates import Aggregate
 from django.db.models.deletion import ProtectedError
+from django.db.models.expressions import ExpressionWrapper, OuterRef, Subquery
 from django.db.models.fields import FloatField
 from django.forms.formsets import formset_factory
 from django.forms.models import modelformset_factory
@@ -15,13 +18,13 @@ from .forms import *
 
 
 def index(request):
-    teBetalen = Leider.objects.values('naam').order_by('volgorde').\
-    annotate(prijsNormaal=Coalesce(Sum(F('telling__aantalNormaal') * F('telling__prijsKlasse__normaal'), output_field=FloatField()), Value(0))).\
-    annotate(prijsZwaar=Coalesce(Sum(F('telling__aantalZwaar') * F('telling__prijsKlasse__zwaar'), output_field=FloatField()), Value(0))).\
+    content = Telling.objects.values('leider__naam').order_by('leider').\
+    annotate(prijsNormaal=Coalesce(Sum(F('aantalNormaal') * F('prijsKlasse__normaal'), output_field=FloatField()), Value(0))).\
+    annotate(prijsZwaar=Coalesce(Sum(F('aantalZwaar') * F('prijsKlasse__zwaar'), output_field=FloatField()), Value(0))).\
     annotate(totaal=Coalesce(F('prijsNormaal') + F('prijsZwaar'), Value(0))).\
-    annotate(betaald=Coalesce(Sum('betaling__hoeveelheid'), Value(0)))
-
-    return render(request, 'beheer/index.html', {'leiders': teBetalen})
+    annotate(betaald=Coalesce(Subquery(Betaling.objects.filter(leider=OuterRef('leider_id')).values('leider').annotate(som=Sum('hoeveelheid')).values('som')), Value(0))).\
+    annotate(schulden=ExpressionWrapper(F('totaal') - F('betaald'), output_field=FloatField()))
+    return render(request, 'beheer/index.html', {'content': content})
 
 @login_required
 def logout_view(request):
