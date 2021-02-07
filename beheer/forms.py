@@ -25,6 +25,8 @@ class TellingForm(forms.Form):
     def save(self):
         data = self.cleaned_data
         for leider in Leider.objects.all():
+            if data['normaal_%s' % (leider)] == None and data['zwaar_%s' % (leider)] == None:
+                continue
             t = Telling(prijsKlasse=data['prijsKlasse'], leider=leider, aantalNormaal=data['normaal_%s' % (leider)], aantalZwaar=data['zwaar_%s' % (leider)])
             t.save()
 
