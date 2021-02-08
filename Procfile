@@ -1,0 +1,1 @@
+web: gunicorn drankBeheer.wsgi --log-file -
