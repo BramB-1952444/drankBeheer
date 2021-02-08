@@ -67,6 +67,11 @@ def prijsKlasse_delete(request, prijsKlasse_id):
         return HttpResponseRedirect(reverse('prijsKlasse'))
     return HttpResponseRedirect(reverse('prijsKlasse'))
 
+@login_required
+def leider_delete(request, leider_id):
+    Leider.objects.get(pk=leider_id).delete()
+    return HttpResponseRedirect(reverse('leidersUpdate'))
+    
 
 def telling_view(request):
     if request.method == 'POST':

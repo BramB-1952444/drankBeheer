@@ -1,13 +1,14 @@
 {% extends 'beheer/base.html' %}
 {% block content %}
+{% load crispy_forms_tags %}
 <form method="POST">
-{% csrf_token %}
-{{ newForm }}
+  {% csrf_token %}
+  {{ newForm|crispy }}
   <button type="submit" class="btn btn-success">Toevoegen</button>
 {{ form.errors }}
 </form>
 <form method="POST" action="{% url 'leidersUpdate' %}">
 {% csrf_token %}
-{{ volgordeForm }}
+{{ volgordeForm|crispy }}
 <button type="submit" class="btn btn-primary">Update</button>
 {% endblock content%}

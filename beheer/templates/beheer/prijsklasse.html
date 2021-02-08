@@ -3,9 +3,10 @@
 {% block title %}Prijsklasses{% endblock %}
 {% block content %}
 <h2>Prijsklasses</h2>
+{% load crispy_forms_tags %}
 <form method="POST">
 {% csrf_token %}
-{{ form }}
+{{ form|crispy }}
   <button type="submit" class="btn btn-primary">Submit</button>
 {{ form.errors }}
 </form>
