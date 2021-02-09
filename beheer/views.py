@@ -126,18 +126,23 @@ def betalingView(request):
 
 def leider_detail(request, leider_id):
     datums = []
+    normaalCum = []
+    zwaarCum = []
     normaal = []
     zwaar = []
+    balans = []
     l = get_object_or_404(Leider, pk=leider_id)
     tellingen = Telling.objects.filter(leider=l)
     for i in range(len(tellingen)):
         datums.append(tellingen[i].datum.strftime("%d/%m/%Y"))
+        normaal.append(int(tellingen[i].aantalNormaal or 0))
+        zwaar.append(int(tellingen[i].aantalZwaar or 0))
         if i != 0:
-            normaal.append(normaal[i-1] + int(tellingen[i].aantalNormaal or 0))
-            zwaar.append(normaal[i-1] + int(tellingen[i].aantalZwaar or 0))
+            normaalCum.append(normaalCum[i-1] + int(tellingen[i].aantalNormaal or 0))
+            zwaarCum.append(zwaarCum[i-1] + int(tellingen[i].aantalZwaar or 0))
         else:
-            normaal.append(int(tellingen[i].aantalNormaal or 0))
-            zwaar.append(int(tellingen[i].aantalZwaar or 0))
+            normaalCum.append(int(tellingen[i].aantalNormaal or 0))
+            zwaarCum.append(int(tellingen[i].aantalZwaar or 0))
 
 
-    return render(request, 'beheer/leiderOverzicht.html', {"datums": datums, "normaal": normaal, "zwaar": zwaar})
+    return render(request, 'beheer/leiderOverzicht.html', {"datums": datums, "normaal": normaal, "zwaar": zwaar, "normaalCum": normaalCum, "zwaarCum": zwaarCum, "balans": balans})

@@ -3,8 +3,12 @@
 {% block content %}
 {% load crispy_forms_tags %}
 <form method="POST"> 
+<div class="mb-3">
 {% csrf_token %}
+<div class="mb-3">
 {{ form|crispy }}
+</div>
 <button type="submit" class="btn btn-primary">Submit</button>
+</div>
 </form>
 {% endblock %}

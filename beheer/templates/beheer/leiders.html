@@ -1,14 +1,23 @@
 {% extends 'beheer/base.html' %}
 {% block content %}
 {% load crispy_forms_tags %}
+<h2> Nieuwe leider: </h2>
 <form method="POST">
   {% csrf_token %}
+  <div class="mb-3">
   {{ newForm|crispy }}
+  </div>
+  <div class="mb-3">
   <button type="submit" class="btn btn-success">Toevoegen</button>
-{{ form.errors }}
+  </div>
 </form>
+<h2> Volgorde aanpassen: </h2>
 <form method="POST" action="{% url 'leidersUpdate' %}">
 {% csrf_token %}
+<div class="mb-3">
 {{ volgordeForm|crispy }}
+</div>
+<div class="mb-3">
 <button type="submit" class="btn btn-primary">Update</button>
+</div>
 {% endblock content%}
