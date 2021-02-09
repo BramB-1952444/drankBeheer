@@ -136,8 +136,8 @@ def leider_detail(request, leider_id):
             normaal.append(normaal[i-1] + int(tellingen[i].aantalNormaal or 0))
             zwaar.append(normaal[i-1] + int(tellingen[i].aantalZwaar or 0))
         else:
-            normaal.append(int(tellingen[i].aantalNormaal) or 0)
-            zwaar.append(int(tellingen[i].aantalZwaar) or 0)
+            normaal.append(int(tellingen[i].aantalNormaal or 0))
+            zwaar.append(int(tellingen[i].aantalZwaar or 0))
 
 
     return render(request, 'beheer/leiderOverzicht.html', {"datums": datums, "normaal": normaal, "zwaar": zwaar})
