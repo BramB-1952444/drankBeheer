@@ -89,27 +89,24 @@ def telling_view(request):
 @login_required
 def leider_view(request):
     if request.method == 'POST':
-        volgordeForm = LeiderVolgordeForm()
         Nieuweform = NewLeiderForm(data=request.POST)
         if Nieuweform.is_valid():
             Nieuweform.save()
             return HttpResponseRedirect(reverse('leiders'))
     else:
         Nieuweform = NewLeiderForm()
-        volgordeForm = LeiderVolgordeForm()
+    leiders = Leider.objects.all()
 
-    return render(request, 'beheer/leiders.html', {'newForm': Nieuweform, 'volgordeForm': volgordeForm})
+    return render(request, 'beheer/leiders.html', {'newForm': Nieuweform, 'leiders': leiders})
 
 
 @login_required
 def leider_volgorde(request):
     if request.method == 'POST':
-        form = LeiderVolgordeForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('leiders'))
-    else:
-        return HttpResponseRedirect(reverse('leiders'))
+        data = json.loads(request.body.decode('utf-8'))
+        for i in range(len(data)):
+            Leider.objects.filter(pk=data[i]).update(volgorde=i)
+    return HttpResponseRedirect(reverse('leiders'))
 
 
 @login_required
