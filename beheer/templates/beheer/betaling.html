@@ -1,15 +1,10 @@
-{% extends 'beheer/base.html' %}
-{% block title %}Prijsklasses{% endblock %}
-{% load crispy_forms_tags %}
-{% block content %}
+{% extends 'beheer/base.html' %} {% block title %}Prijsklasses{% endblock %} {%
+load crispy_forms_tags %} {% block content %}
 <h2>Betaling</h2>
 <form method="POST">
-<div class="mb-3">
-{% csrf_token %}
-{{ form|crispy }}
-</div>
-<div class="mb-3">
-<button type="submit" class="btn btn-primary">Submit</button>
-</div>
+    <div class="mb-3">{% csrf_token %} {{ form|crispy }}</div>
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </form>
 {% endblock content %}

@@ -1,5 +1,7 @@
 {% extends 'beheer/base.html' %}
+{% load static %}
 {% block content %}
+<body>
 <table class='table table-striped'>
     <thead>
     <tr>
@@ -14,6 +16,7 @@
         <td> € {{ leider.schulden }} </td>
     </tr>
 {% endfor %}
-</tbody>
+  </tbody>
 </table>
+</body>
 {% endblock content%}
