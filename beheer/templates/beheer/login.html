@@ -1,6 +1,7 @@
-{% extends 'beheer/base.html' %} {% block title %}Login{% endblock %} {% block
-content %}
+{% extends 'beheer/base.html' %} {% block title %}Login{% endblock %} 
+{% block content %} {% load static %}
 <h2>Login</h2>
+<a href="/accounts/google/login/"><img src="{% static 'img/google_signin.png' %}"></a>
 <form method="POST">
     {% csrf_token %}
     <div class="mb-3">
