@@ -1,16 +1,13 @@
 import json
-from django.db.models import aggregates
-from django.db.models.aggregates import Aggregate
 from django.db.models.deletion import ProtectedError
 from django.db.models.expressions import ExpressionWrapper, OuterRef, Subquery
 from django.db.models.fields import FloatField
-from django.http.response import HttpResponseRedirect, JsonResponse
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-from django.core import serializers
 from django.contrib.auth import logout, login
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum, F, Value
 from django.db.models.functions import Coalesce
 from .forms import *
@@ -28,7 +25,7 @@ def index(request):
     return render(request, 'beheer/index.html', {'content': content})
 
 
-@login_required
+@staff_member_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
@@ -46,7 +43,7 @@ def login_view(request):
     return render(request, 'beheer/login.html', {'form': form})
 
 
-@login_required
+@staff_member_required
 def prijsKlasse_view(request):
     if request.method == 'POST':
         form = PrijsKlasseForm(data=request.POST)
@@ -59,7 +56,7 @@ def prijsKlasse_view(request):
     return render(request, 'beheer/prijsklasse.html', {'form': form, 'prijsKlasses': PrijsKlasse.objects.all()})
 
 
-@login_required
+@staff_member_required
 def prijsKlasse_delete(request, prijsKlasse_id):
     try:
         PrijsKlasse.objects.get(pk=prijsKlasse_id).delete()
@@ -67,7 +64,7 @@ def prijsKlasse_delete(request, prijsKlasse_id):
         return HttpResponseRedirect(reverse('prijsKlasse'))
     return HttpResponseRedirect(reverse('prijsKlasse'))
 
-@login_required
+@staff_member_required
 def leider_delete(request, leider_id):
     Leider.objects.get(pk=leider_id).delete()
     return HttpResponseRedirect(reverse('leidersUpdate'))
@@ -86,7 +83,7 @@ def telling_view(request):
     return render(request, 'beheer/telling.html', {'form': form, 'leiders': leiders})
 
 
-@login_required
+@staff_member_required
 def leider_view(request):
     if request.method == 'POST':
         Nieuweform = NewLeiderForm(data=request.POST)
@@ -100,7 +97,7 @@ def leider_view(request):
     return render(request, 'beheer/leiders.html', {'newForm': Nieuweform, 'leiders': leiders})
 
 
-@login_required
+@staff_member_required
 def leider_volgorde(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
@@ -109,7 +106,7 @@ def leider_volgorde(request):
     return HttpResponseRedirect(reverse('leiders'))
 
 
-@login_required
+@staff_member_required
 def betalingView(request):
     if request.method == 'POST':
         form = BetalingForm(data=request.POST)
