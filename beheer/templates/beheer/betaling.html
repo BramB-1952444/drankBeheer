@@ -7,4 +7,23 @@
         <button type="submit" class="btn btn-primary">Opslaan 💶</button>
     </div>
 </form>
+<h3>Laatste 5 betalingen</h3>
+<table class='table table-striped'>
+    <thead>
+    <tr>
+      <th scope="col">Naam</th>
+      <th scope="col">Hoeveelheid</th>
+      <th scope="col">Tijdstip</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for betaling in betalingen %}
+    <tr>
+        <th scope="row">{{ betaling.leider }} </td>
+        <td> € {{ betaling.hoeveelheid }} </td>
+        <td>{{ betaling.datum }} </td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
 {% endblock content %}

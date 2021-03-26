@@ -108,6 +108,7 @@ def leider_volgorde(request):
 
 @staff_member_required
 def betalingView(request):
+    betalingen = Betaling.objects.order_by('-datum')[:5]
     if request.method == 'POST':
         form = BetalingForm(data=request.POST)
         if form.is_valid():
@@ -115,7 +116,7 @@ def betalingView(request):
             return HttpResponseRedirect(reverse('betaling'))
     else:
         form = BetalingForm()
-    return render(request, 'beheer/betaling.html', {'form': form})
+    return render(request, 'beheer/betaling.html', {'form': form, 'betalingen': betalingen})
 
 
 def leider_detail(request, leider_id):
