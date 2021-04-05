@@ -1,7 +1,11 @@
 {% extends 'beheer/base.html' %}
 {% load static %}
 {% block content %}
+<script
+  src="{% static '/js/copy.js' %}"
+></script>
 <body>
+<h3 id="rekening">BE10 9733 6252 4804<button type="button" class="btn btn-primary" onclick="copy()">Kopieer</button></h3>
 <table class='table table-striped'>
     <thead>
     <tr>
