@@ -69,7 +69,7 @@ def leider_delete(request, leider_id):
     Leider.objects.get(pk=leider_id).delete()
     return HttpResponseRedirect(reverse('leidersUpdate'))
     
-
+@staff_member_required
 def telling_view(request):
     if request.method == 'POST':
         form = TellingForm(data=request.POST)
