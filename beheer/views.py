@@ -127,6 +127,7 @@ def leider_detail(request, leider_id):
     zwaar = []
     balans = []
     l = get_object_or_404(Leider, pk=leider_id)
+    betalingen = Betaling.objects.filter(leider=l).order_by('-datum')
     tellingen = Telling.objects.filter(leider=l)
     for i in range(len(tellingen)):
         datums.append(tellingen[i].datum.strftime("%d/%m/%Y"))
@@ -140,4 +141,4 @@ def leider_detail(request, leider_id):
             zwaarCum.append(int(tellingen[i].aantalZwaar or 0))
 
 
-    return render(request, 'beheer/leiderOverzicht.html', {"datums": datums, "normaal": normaal, "zwaar": zwaar, "normaalCum": normaalCum, "zwaarCum": zwaarCum, "balans": balans})
+    return render(request, 'beheer/leiderOverzicht.html', {"datums": datums, "normaal": normaal, "zwaar": zwaar, "normaalCum": normaalCum, "zwaarCum": zwaarCum, "balans": balans, "betalingen": betalingen})

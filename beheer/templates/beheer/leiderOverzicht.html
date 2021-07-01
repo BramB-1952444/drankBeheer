@@ -70,4 +70,21 @@
         }
     });
 </script>
+<h3>Laatste betalingen</h3>
+<table class='table table-striped'>
+    <thead>
+    <tr>
+      <th scope="col">Tijdstip</th>
+      <th scope="col">Hoeveelheid</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for betaling in betalingen %}
+    <tr>
+        <td>{{ betaling.datum }} </td>
+        <td> € {{ betaling.hoeveelheid }} </td>
+    </tr>
+{% endfor %}
+  </tbody>
+</table>
 {% endblock content%}
