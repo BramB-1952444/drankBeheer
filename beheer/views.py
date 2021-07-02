@@ -64,11 +64,13 @@ def prijsKlasse_delete(request, prijsKlasse_id):
         return HttpResponseRedirect(reverse('prijsKlasse'))
     return HttpResponseRedirect(reverse('prijsKlasse'))
 
+
 @staff_member_required
 def leider_delete(request, leider_id):
     Leider.objects.get(pk=leider_id).delete()
     return HttpResponseRedirect(reverse('leidersUpdate'))
-    
+
+
 @staff_member_required
 def telling_view(request):
     if request.method == 'POST':
@@ -123,22 +125,21 @@ def leider_detail(request, leider_id):
     datums = []
     normaalCum = []
     zwaarCum = []
-    normaal = []
-    zwaar = []
     balans = []
     l = get_object_or_404(Leider, pk=leider_id)
     betalingen = Betaling.objects.filter(leider=l).order_by('-datum')
     tellingen = Telling.objects.filter(leider=l)
     for i in range(len(tellingen)):
+        tellingen[i].totaal = int(tellingen[i].aantalNormaal or 0) * tellingen[i].prijsKlasse.normaal + int(tellingen[i].aantalZwaar or 0) * tellingen[i].prijsKlasse.zwaar
+        tellingen[i].aantalNormaal = int(tellingen[i].aantalNormaal or 0)
+        tellingen[i].aantalZwaar = int(tellingen[i].aantalZwaar or 0)
         datums.append(tellingen[i].datum.strftime("%d/%m/%Y"))
-        normaal.append(int(tellingen[i].aantalNormaal or 0))
-        zwaar.append(int(tellingen[i].aantalZwaar or 0))
         if i != 0:
-            normaalCum.append(normaalCum[i-1] + int(tellingen[i].aantalNormaal or 0))
+            normaalCum.append(normaalCum[i-1] +
+                              int(tellingen[i].aantalNormaal or 0))
             zwaarCum.append(zwaarCum[i-1] + int(tellingen[i].aantalZwaar or 0))
         else:
             normaalCum.append(int(tellingen[i].aantalNormaal or 0))
             zwaarCum.append(int(tellingen[i].aantalZwaar or 0))
 
-
-    return render(request, 'beheer/leiderOverzicht.html', {"datums": datums, "normaal": normaal, "zwaar": zwaar, "normaalCum": normaalCum, "zwaarCum": zwaarCum, "balans": balans, "betalingen": betalingen})
+    return render(request, 'beheer/leiderOverzicht.html', {"datums": datums, "tellingen": tellingen, "normaalCum": normaalCum, "zwaarCum": zwaarCum, "balans": balans, "betalingen": betalingen})

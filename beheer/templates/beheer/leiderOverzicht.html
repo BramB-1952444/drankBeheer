@@ -4,10 +4,48 @@
     integrity="sha256-t9UJPrESBeG2ojKTIcFLPGF7nHi2vEc7f5A2KpH/UBU="
     crossorigin="anonymous"
 ></script>
-<h2>Cummulatief gezuip</h2>
+<h3>Cummulatief gezuip</h3>
 <canvas id="cumSum"></canvas>
-<h2>gezopen per telling</h2>
-<canvas id="bars"></canvas>
+<h3>Tellingen</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Tijdstip</th>
+            <th scope="col">Hoeveelheid normaal</th>
+            <th scope="col">Hoeveelheid zwaar</th>
+            <th scope="col">Prijs klasse</th>
+            <th scope="col">Totaal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for telling in tellingen %}
+        <tr>
+            <td>{{ telling.datum }}</td>
+            <td>{{ telling.aantalNormaal}}</td>
+            <td>{{ telling.aantalZwaar }}</td>
+            <td>{{ telling.prijsKlasse }}</td>
+            <td>€{{ telling.totaal}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h3>Laatste betalingen</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Tijdstip</th>
+            <th scope="col">Hoeveelheid</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for betaling in betalingen %}
+        <tr>
+            <td>{{ betaling.datum }}</td>
+            <td>€ {{ betaling.hoeveelheid }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 <script>
     var ctx = document.getElementById('cumSum');
     var cumSum = new Chart(ctx, {
@@ -39,52 +77,5 @@
             }
         }
     });
-    var ctx = document.getElementById('bars');
-    var bars = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: {{ datums|safe }},
-            datasets: [{
-                label: 'aantal normaal',
-                data: {{ normaal|safe }},
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            },
-            {
-                label: 'aantal zwaar',
-                data: {{ zwaar|safe }},
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
 </script>
-<h3>Laatste betalingen</h3>
-<table class='table table-striped'>
-    <thead>
-    <tr>
-      <th scope="col">Tijdstip</th>
-      <th scope="col">Hoeveelheid</th>
-    </tr>
-  </thead>
-  <tbody>
-{% for betaling in betalingen %}
-    <tr>
-        <td>{{ betaling.datum }} </td>
-        <td> € {{ betaling.hoeveelheid }} </td>
-    </tr>
-{% endfor %}
-  </tbody>
-</table>
 {% endblock content%}
