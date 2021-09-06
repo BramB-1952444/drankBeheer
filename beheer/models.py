@@ -4,6 +4,7 @@ from django.db.models.expressions import OrderBy
 class Leider(models.Model):
     naam = models.CharField(max_length=100, unique=True)
     volgorde = models.IntegerField(default=500, blank=True)
+    actief = models.BooleanField(default=True, blank=False)
 
     def __str__(self):
         return self.naam

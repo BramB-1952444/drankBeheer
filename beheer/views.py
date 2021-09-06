@@ -15,7 +15,7 @@ from .forms import *
 
 
 def index(request):
-    content = Telling.objects.values('leider__naam', 'leider__id').order_by('leider').\
+    content = Telling.objects.filter(leider__actief='True').values('leider__naam', 'leider__id').order_by('leider').\
         annotate(prijsNormaal=Coalesce(Sum(F('aantalNormaal') * F('prijsKlasse__normaal'), output_field=FloatField()), Value(0))).\
         annotate(prijsZwaar=Coalesce(Sum(F('aantalZwaar') * F('prijsKlasse__zwaar'), output_field=FloatField()), Value(0))).\
         annotate(totaal=Coalesce(F('prijsNormaal') + F('prijsZwaar'), Value(0))).\
@@ -67,7 +67,9 @@ def prijsKlasse_delete(request, prijsKlasse_id):
 
 @staff_member_required
 def leider_delete(request, leider_id):
-    Leider.objects.get(pk=leider_id).delete()
+    l = Leider.objects.get(pk=leider_id)
+    l.actief = False
+    l.save()
     return HttpResponseRedirect(reverse('leidersUpdate'))
 
 
@@ -81,8 +83,7 @@ def telling_view(request):
     else:
         form = TellingForm
 
-    leiders = Leider.objects.all()
-    return render(request, 'beheer/telling.html', {'form': form, 'leiders': leiders})
+    return render(request, 'beheer/telling.html', {'form': form})
 
 
 @staff_member_required
@@ -94,7 +95,7 @@ def leider_view(request):
             return HttpResponseRedirect(reverse('leiders'))
     else:
         Nieuweform = NewLeiderForm()
-    leiders = Leider.objects.all()
+    leiders = Leider.objects.filter(actief=True)
 
     return render(request, 'beheer/leiders.html', {'newForm': Nieuweform, 'leiders': leiders})
 
@@ -104,7 +105,7 @@ def leider_volgorde(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         for i in range(len(data)):
-            Leider.objects.filter(pk=data[i]).update(volgorde=i)
+            Leider.objects.filter(actief=True).filter(pk=data[i]).update(volgorde=i)
     return HttpResponseRedirect(reverse('leiders'))
 
 
