@@ -6,8 +6,8 @@
 ></script>
 <h3>Cummulatief gezuip</h3>
 <canvas id="cumSum"></canvas>
-<h3>Tellingen</h3>
-<table class="table table-striped">
+<h3>Tellingen <button onclick="toggelTellingen()">Tonen</button> </h3>
+<table class="table table-striped" id="tellingen" style="display: none">
     <thead>
         <tr>
             <th scope="col">Tijdstip</th>
@@ -29,8 +29,8 @@
         {% endfor %}
     </tbody>
 </table>
-<h3>Laatste betalingen</h3>
-<table class="table table-striped">
+<h3>Laatste betalingen <button onclick="toggelBetalingen()">Tonen</button> </h3>
+<table class="table table-striped" id="betalingen" style="display: none">
     <thead>
         <tr>
             <th scope="col">Tijdstip</th>
@@ -77,5 +77,21 @@
             }
         }
     });
+    function toggelTellingen() {
+        var table = document.getElementById('tellingen');
+        if (table.style.display === 'none') {
+            table.style.display = 'table';
+        } else {
+            table.style.display = 'none';
+        }
+    }
+    function toggelBetalingen() {
+        var table = document.getElementById('betalingen');
+        if (table.style.display === 'none') {
+            table.style.display = 'table';
+        } else {
+            table.style.display = 'none';
+        }
+    }
 </script>
 {% endblock content%}
