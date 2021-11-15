@@ -15,7 +15,7 @@
   </thead>
   <tbody>
 {% for leider in content %}
-    <tr>
+    <tr {% if leider.schulden > 50 %} class="table-danger" {% endif %}>
         <th scope="row"><a href="{% url 'leiderView' leider.leider__id %}"> {{ leider.leider__naam }} </td>
         <td> € {{ leider.schulden }} </td>
     </tr>
