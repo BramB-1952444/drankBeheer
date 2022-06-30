@@ -1,11 +1,11 @@
 function copy() {
-    var text = "BE10 9733 6252 4804";
-    navigator.clipboard.writeText(text).then(
+    const rekening = 'BE77 7370 6284 6242';
+    navigator.clipboard.writeText(rekening).then(
         function () {
-            alert("Rekening nummer gekopieerd");
+            alert('Rekening nummer gekopieerd');
         },
         function (err) {
-            alert("Kon rekening nummer niet kopieren");
+            alert('Kon rekening nummer niet kopieren');
         }
     );
 }
