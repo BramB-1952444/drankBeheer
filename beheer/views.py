@@ -68,8 +68,9 @@ def prijsKlasse_delete(request, prijsKlasse_id):
 @staff_member_required
 def leider_delete(request, leider_id):
     l = Leider.objects.get(pk=leider_id)
-    l.actief = False
-    l.save()
+    # l.actief = False
+    # l.save()
+    l.delete()
     return HttpResponseRedirect(reverse('leidersUpdate'))
 
 
