@@ -4,4 +4,5 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /drankBeheer
 COPY requirements.txt /drankBeheer/
 RUN pip install -r requirements.txt
+RUN python manage.py collectstatic
 COPY . /drankBeheer/:WORKDIR
