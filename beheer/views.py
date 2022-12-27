@@ -1,7 +1,7 @@
 import json
 from django.db.models.deletion import ProtectedError
 from django.db.models.expressions import ExpressionWrapper, OuterRef, Subquery
-from django.db.models.fields import FloatField
+from django.db.models.fields import FloatField, DecimalField
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
@@ -11,17 +11,18 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum, F, Value
 from django.db.models.functions import Coalesce
 from .forms import *
+from decimal import Decimal
 # Create your views here.
 
 
 def index(request):
     content = Telling.objects.filter(leider__actief='True').values('leider__naam', 'leider__id').order_by('leider').\
-        annotate(prijsNormaal=Coalesce(Sum(F('aantalNormaal') * F('prijsKlasse__normaal'), output_field=FloatField()), Value(0))).\
-        annotate(prijsZwaar=Coalesce(Sum(F('aantalZwaar') * F('prijsKlasse__zwaar'), output_field=FloatField()), Value(0))).\
-        annotate(totaal=Coalesce(F('prijsNormaal') + F('prijsZwaar'), Value(0))).\
-        annotate(betaald=Coalesce(Subquery(Betaling.objects.filter(leider=OuterRef('leider_id')).values('leider').annotate(som=Sum('hoeveelheid')).values('som')), Value(0))).\
+        annotate(prijsNormaal=Coalesce(Sum(F('aantalNormaal') * F('prijsKlasse__normaal')), Decimal(0))).\
+        annotate(prijsZwaar=Coalesce(Sum(F('aantalZwaar') * F('prijsKlasse__zwaar')), Decimal(0))).\
+        annotate(totaal=Coalesce(F('prijsNormaal') + F('prijsZwaar'), Decimal(0))).\
+        annotate(betaald=Coalesce(Subquery(Betaling.objects.filter(leider=OuterRef('leider_id')).values('leider').annotate(som=Sum('hoeveelheid')).values('som')), Decimal(0))).\
         annotate(schulden=ExpressionWrapper(F('totaal') -
-                                            F('betaald'), output_field=FloatField()))
+                                            F('betaald'), output_field=DecimalField()))
     return render(request, 'beheer/index.html', {'content': content})
 
 
